@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Assistant for EqualEdge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+        }
+        #assistant-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        #spline-container {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div id="assistant-container">
+        <h1>Welcome to EqualEdge</h1>
+        <button id="start-assistant-btn">Start Voice Assistant</button>
+        <button id="speak-command-btn">Speak Command</button>
+        <div id="spline-container">
+            <!-- Embed the Spline model here -->
+            
+            <iframe src='https://my.spline.design/sphereassistantdemocommunitycopy-39ad127ccc1b411ff3c66200c4996c8a/' frameborder='0' width='100%' height='150%'></iframe>
+
+            <!-- dth="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe> -->
+        </div>
+    </div>
+
+    <script>
+        // Function to capture voice command and send it to Flask
+        document.getElementById('speak-command-btn').addEventListener('click', () => {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US'; // Language for recognition
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                const command = event.results[0][0].transcript;
+                console.log("User said: " + command);
+
+                // Send the command to Flask
+                fetch('/process-command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ command: command })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Send the response to text-to-speech endpoint
+                    fetch('/speak-notification', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ text: data.response })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        // Play the audio response
+                        let audio = new Audio('notification.mp3');
+                        audio.play();
+                    });
+                });
+            };
+
+            recognition.onerror = function(event) {
+                alert('Sorry, I couldn\'t hear you. Please try again.');
+            };
+        });
+    </script>
+</body>
+</html>
