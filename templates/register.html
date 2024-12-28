@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        
+        #live-feed {
+            position: fixed;
+            top: 10px;
+            right: 700px;
+            width: 200px;
+            height: 200px;
+            border: 2px solid black;
+            z-index: 10;
+        }
+    
+    </style>
+</head>
+<body>
+   
+    <div class="container mt-4">
+      
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}
+        <img id="live-feed" src="{{ url_for('video_feed') }}" alt="Live Camera Feed">
+
+        <h1>Register</h1>
+        <form method="POST">
+            <label>Username:</label>
+            <input type="text" name="username" required>
+            <button type="submit">Register</button>
+        </form>
+        {% endblock %}
+  
+        
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
