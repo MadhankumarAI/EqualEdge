@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 
 # Initialize Flask app
 app = Flask(__name__)
-app.secret_key = "your_secret_key"
+app.secret_key = 1234567890poiuyt" # keep this in .env madhan later
 
 # Global variables
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -33,7 +33,7 @@ load_registered_faces()
 # Function to capture a face from the webcam
 def capture_face():
     global webcam
-    webcam = cv2.VideoCapture(0, cv2.CAP_ANY)  # Use any backend for webcam
+    webcam = cv2.VideoCapture(0, cv2.CAP_ANY)  # Use any backend for webcam i am letting opencv to choose the available one
 
     if not webcam.isOpened():
         print("Error: Could not access the webcam.")
@@ -54,7 +54,7 @@ def capture_face():
         return None
 
     x, y, w, h = faces[0]
-    face = gray[y:y + h, x:x + w]  # Extract grayscale face region
+    face = gray[y:y + h, x:x + w]  # Extract grayscale / blackand white face region
     return face
 
 # Function to generate video frames for live feed
