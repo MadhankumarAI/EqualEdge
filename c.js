@@ -82,9 +82,9 @@ function changeFont() {
     setFont(fonts[fontIndex]);
 }
 
-// Set font family globally
+// Set font family globally (excluding settings container)
 function setFont(font) {
-    document.body.style.fontFamily = `${font}, sans-serif`; // Apply to body
+    document.body.style.fontFamily = `${font}, sans-serif`; // Apply to body only
     console.log(`Font changed to: ${font}`);
 }
 
@@ -95,10 +95,10 @@ function changeFontSize(delta) {
     setFontSize(currentFontSize);
 }
 
-// Set font size globally
+// Set font size globally (excluding settings container)
 function setFontSize(size) {
-    document.documentElement.style.fontSize = `${size}px`;
-    document.getElementById('fontSizeValue').textContent = `${size}px`;
+    document.documentElement.style.fontSize = `${size}px`; // Apply to document
+    document.getElementById('fontSizeValue').textContent = `${size}px`; // Display current font size
 }
 
 // Adjust contrast
@@ -109,9 +109,9 @@ function adjustContrast(delta) {
     setContrast(currentContrast);
 }
 
-// Set contrast globally
+// Set contrast globally (excluding settings container)
 function setContrast(value) {
-    document.documentElement.style.filter = `contrast(${value})`;
-    document.getElementById('contrastValue').textContent = value.toFixed(1); // Display one decimal
+    document.documentElement.style.filter = `contrast(${value})`; // Apply to document
+    document.getElementById('contrastValue').textContent = value.toFixed(1); // Display contrast value
     console.log(`Contrast set to: ${value}`);
 }
